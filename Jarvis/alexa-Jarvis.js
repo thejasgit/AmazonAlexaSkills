@@ -1,6 +1,7 @@
 var https = require('https')
 var count = 0;
 var laundryDate = new Date("January 1, 2017")
+var shoppingList = ["eggs", "onions", "milk"];
 
 exports.handler = (event, context) => {
 
@@ -71,6 +72,21 @@ exports.handler = (event, context) => {
               )
             )
             break;
+
+          case "GetShoppingList":
+            console.log(`LAUNCH REQUEST`)
+            console.log(`Intent: GetShoppingList`)
+
+
+            context.succeed(
+
+              generateResponse(
+                buildSpeechletResponse("Your shopping list has these items. " + shoppingList.join(", "), true),
+                {}
+              )
+            )
+            break;
+
 
           case "GetVideoViewCount":
             var endpoint = "" // ENDPOINT GOES HERE
