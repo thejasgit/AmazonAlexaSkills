@@ -1,7 +1,7 @@
 var https = require('https')
 var count = 0;
 var laundryDate = new Date("January 1, 2017")
-var shoppingList = ["eggs", "onions", "milk"];
+var shoppingList = [];
 
 exports.handler = (event, context) => {
 
@@ -87,6 +87,117 @@ exports.handler = (event, context) => {
             )
             break;
 
+
+          case "AddShopItem":
+            console.log(`LAUNCH REQUEST`)
+            console.log(`Intent: AddShopItem`)
+            // console.log(event.request.intent.slots)
+            var msg = "";
+            Object.keys(event.request.intent.slots).some(function (key, index) {
+              // key: the name of the object key
+              // index: the ordinal position of the key within the object 
+              var value = event.request.intent.slots[key].value;
+
+              if (value) {
+                console.log("item to be added : " + value)
+
+                if (shoppingList.indexOf(value) != -1) {
+                  msg = "Item alreday present in the list."
+                } else {
+                  shoppingList.push(value);
+                  msg = "Item Added."
+
+                }
+                console.log(shoppingList)
+                return true;
+              }
+
+
+            });
+
+
+            context.succeed(
+
+              generateResponse(
+                buildSpeechletResponse(msg, true),
+                {}
+              )
+            )
+            break;
+
+          case "RemoveShopItem":
+            console.log(`LAUNCH REQUEST`)
+            console.log(`Intent: RemoveShopItem`)
+            var msg = "";
+            Object.keys(event.request.intent.slots).some(function (key, index) {
+              // key: the name of the object key
+              // index: the ordinal position of the key within the object 
+              var value = event.request.intent.slots[key].value;
+
+              if (value) {
+                console.log("item to be Removed : " + value)
+
+                if (shoppingList.indexOf(value) != -1) {
+                  shoppingList.splice(shoppingList.indexOf(value), 1)
+                  msg = "Item Removed."
+                } else {
+
+                  msg = "Item not present in the list."
+
+                }
+                console.log(shoppingList)
+                return true;
+              }
+
+
+            });
+
+
+            context.succeed(
+
+              generateResponse(
+                buildSpeechletResponse(msg, true),
+                {}
+              )
+            )
+            break;
+
+          case "CheckShopItem":
+            console.log(`LAUNCH REQUEST`)
+            console.log(`Intent: CheckShopItem`)
+            var msg = "";
+            Object.keys(event.request.intent.slots).some(function (key, index) {
+              // key: the name of the object key
+              // index: the ordinal position of the key within the object 
+              var value = event.request.intent.slots[key].value;
+
+              if (value) {
+                console.log("item to be Removed : " + value)
+
+                if (shoppingList.indexOf(value) != -1) {
+
+                  msg = "Item present in the list."
+                } else {
+
+                  msg = "Item not present in the list."
+
+                }
+
+                return true;
+              }
+
+
+            });
+
+
+            context.succeed(
+
+              generateResponse(
+                buildSpeechletResponse(msg, true),
+                {}
+              )
+            )
+            break;
 
           case "GetVideoViewCount":
             var endpoint = "" // ENDPOINT GOES HERE
